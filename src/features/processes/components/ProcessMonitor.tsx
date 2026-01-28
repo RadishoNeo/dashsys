@@ -61,12 +61,12 @@ export const ProcessMonitor: React.FC = () => {
                   <td className="px-4 py-3 font-mono text-xs text-text">
                     {p.pid}
                   </td>
-                  <td className="px-4 py-3">
-                    <div className="font-medium text-text">
+                  <td className="px-4 py-3 max-w-75">
+                    <div className="font-medium text-text truncate" title={p.name}>
                       {p.name}
                     </div>
                     {p.command ? (
-                      <div className="mt-1 truncate text-xs text-text-muted">
+                      <div className="mt-1 truncate text-xs text-text-muted" title={p.command}>
                         {p.command}
                       </div>
                     ) : null}
