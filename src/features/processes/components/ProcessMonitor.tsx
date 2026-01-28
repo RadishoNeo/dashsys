@@ -58,8 +58,8 @@ export const ProcessMonitor: React.FC = () => {
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50 hover:bg-muted/50">
-                  <TableHead className="w-[80px]">PID</TableHead>
-                  <TableHead className="max-w-[300px]">Name</TableHead>
+                  <TableHead className="w-20">PID</TableHead>
+                  <TableHead className="max-w-75">Name</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>CPU</TableHead>
                   <TableHead>Memory</TableHead>
@@ -73,7 +73,7 @@ export const ProcessMonitor: React.FC = () => {
                     <TableCell className="font-mono text-xs text-muted-foreground">
                       {p.pid}
                     </TableCell>
-                    <TableCell className="max-w-[300px]">
+                    <TableCell className="max-w-75">
                       <div className="font-medium truncate" title={p.name}>
                         {p.name}
                       </div>

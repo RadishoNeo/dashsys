@@ -32,7 +32,7 @@ export const AppLayout: React.FC<Props> = ({ title, children }) => {
     <div className="min-h-screen bg-background p-6 transition-colors duration-200">
       <div className="max-w-7xl mx-auto space-y-6">
         <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="text-2xl font-bold text-text">
+          <h1 className="text-2xl font-bold text-foreground">
             {title}
           </h1>
           <div className="flex items-center gap-2">

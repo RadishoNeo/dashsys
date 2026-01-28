@@ -15,7 +15,7 @@ export const MetricCard: React.FC<Props> = ({
   title, value, subValue, icon: Icon, status = 'normal'
 }) => {
   const statusColors = {
-    normal: 'border-l-4 border-l-cta shadow-cta/5',
+    normal: 'border-l-4 border-l-primary shadow-primary/5',
     warning: 'border-l-4 border-l-yellow-500 shadow-yellow-500/5',
     danger: 'border-l-4 border-l-red-500 shadow-red-500/5',
   };
