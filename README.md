@@ -53,6 +53,10 @@ DashSys 是一个基于 **Tauri 2.x** 构建的现代化系统监控仪表板，
 - **date-fns** - 日期处理工具
 - **tauri-plugin-system-info-api** - 系统信息插件
 
+## 📄 许可证
+
+本项目采用 [MIT License](LICENSE) 许可证。
+
 ## 🚀 快速开始
 
 ### 前置要求

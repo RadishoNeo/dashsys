@@ -72,3 +72,34 @@ jobs:
           path: src-tauri/target/release/dashsys.exe
           if-no-files-found: error
           retention-days: 7
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Display structure of downloaded files
+        run: ls -R artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Latest Build
+          tag_name: latest
+          target_commitish: master
+          files: |
+            artifacts/dashsys-windows-installer/*.exe
+            artifacts/dashsys-macos-installer/*.dmg
+            artifacts/dashsys-linux-installer/*.deb
+            artifacts/dashsys-windows-binary/dashsys.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
