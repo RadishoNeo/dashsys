@@ -8,7 +8,7 @@ import { CoreGrid } from "./CoreGrid";
 import { CpuDetail } from "./CpuDetail";
 
 export const CpuMonitor: React.FC = () => {
-    const { current, history, coreCount, loadAvg } = useCpuStats(1000);
+    const { current, history, coreCount, loadAvg } = useCpuStats();
 
     if (!current) return <div className="p-4 text-muted-foreground animate-pulse">Loading CPU stats...</div>;
 

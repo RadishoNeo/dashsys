@@ -82,3 +82,27 @@ export interface SystemInfo {
   arch: string; // "x86_64" | "aarch64"
   uptime: number; // seconds
 }
+
+// 详细系统信息 (来自 get_detailed_system_info)
+export interface NetworkAdapterInfo {
+  name: string;
+  description: string;
+  macAddress: string;
+  status: string;
+}
+
+export interface DetailedSystemInfo {
+  osName: string;
+  osVersion: string;
+  osBuild: string;
+  osManufacturer: string;
+  osArchitecture: string;
+  systemManufacturer: string;
+  systemModel: string;
+  biosManufacturer: string;
+  biosVersion: string;
+  totalMemory: number;
+  timeZone: string;
+  hotfixes: string[];
+  networkAdapters: NetworkAdapterInfo[];
+}
