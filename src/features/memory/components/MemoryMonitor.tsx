@@ -9,7 +9,7 @@ export const MemoryMonitor: React.FC = () => {
   const { current, history } = useMemoryStats();
 
   if (!current) {
-    return <div className="p-4 text-gray-500 dark:text-gray-400">Loading memory stats...</div>;
+    return <div className="p-4 text-text-muted animate-pulse">Loading memory stats...</div>;
   }
 
   const status =
@@ -45,7 +45,7 @@ export const MemoryMonitor: React.FC = () => {
         title="Memory Usage History"
         data={history}
         maxPoints={history.length}
-        color="#10b981"
+        color="#22C55E"
         unit="%"
       />
     </div>

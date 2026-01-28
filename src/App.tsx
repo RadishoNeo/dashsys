@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Toaster } from "sonner";
 import { CpuMonitor } from "@/features/cpu";
 import { MemoryMonitor } from "@/features/memory";

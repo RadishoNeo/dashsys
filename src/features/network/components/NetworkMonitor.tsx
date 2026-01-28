@@ -9,7 +9,7 @@ export const NetworkMonitor: React.FC = () => {
   const { current, rxSpeedHistory, txSpeedHistory } = useNetworkStats();
 
   if (!current) {
-    return <div className="p-4 text-gray-500 dark:text-gray-400">Loading network stats...</div>;
+    return <div className="p-4 text-text-muted animate-pulse">Loading network stats...</div>;
   }
 
   const rxMbps = rxSpeedHistory[rxSpeedHistory.length - 1] ?? 0;
@@ -42,34 +42,34 @@ export const NetworkMonitor: React.FC = () => {
           title="Download Speed"
           data={rxSpeedHistory}
           maxPoints={rxSpeedHistory.length}
-          color="#3b82f6"
+          color="#22C55E"
           unit="Mbps"
         />
         <RealtimeLineChart
           title="Upload Speed"
           data={txSpeedHistory}
           maxPoints={txSpeedHistory.length}
-          color="#f97316"
+          color="#22C55E"
           unit="Mbps"
         />
       </div>
 
-      <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <div className="border-b border-gray-200 px-4 py-3 text-sm font-semibold text-gray-900 dark:border-gray-700 dark:text-white">
+      <div className="rounded-lg border border-secondary bg-surface shadow-sm">
+        <div className="border-b border-secondary px-4 py-3 text-sm font-semibold text-text">
           Interfaces
         </div>
-        <div className="divide-y divide-gray-200 dark:divide-gray-700">
+        <div className="divide-y divide-secondary">
           {current.interfaces.map((i) => (
             <div key={i.name} className="px-4 py-3 text-sm">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <div className="font-medium text-gray-900 dark:text-white">
+                <div className="font-medium text-text">
                   {i.name}
                 </div>
-                <div className="text-gray-600 dark:text-gray-300">
+                <div className="text-text-muted">
                   RX: {formatBytes(i.rx_bytes)} · TX: {formatBytes(i.tx_bytes)}
                 </div>
               </div>
-              <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              <div className="mt-1 text-xs text-text-muted">
                 Errors RX: {i.rx_errors} · Errors TX: {i.tx_errors}
               </div>
             </div>

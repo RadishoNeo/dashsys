@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const RealtimeLineChart: React.FC<Props> = ({
-  data, maxPoints = 60, color = '#3b82f6', unit = '%', title
+  data, maxPoints = 60, color = '#22C55E', unit = '%', title
 }) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<echarts.ECharts | null>(null);
@@ -39,8 +39,8 @@ export const RealtimeLineChart: React.FC<Props> = ({
       yAxis: {
         type: 'value',
         max: 100,
-        splitLine: { lineStyle: { color: isDark ? '#374151' : '#e5e7eb' } },
-        axisLabel: { color: isDark ? '#9ca3af' : '#6b7280' }
+        splitLine: { lineStyle: { color: isDark ? '#334155' : '#e5e7eb' } },
+        axisLabel: { color: isDark ? '#94A3B8' : '#6b7280' }
       },
       series: [{
         type: 'line',
@@ -57,9 +57,9 @@ export const RealtimeLineChart: React.FC<Props> = ({
       }],
       tooltip: {
         trigger: 'axis',
-        backgroundColor: isDark ? '#1f2937' : '#ffffff',
-        borderColor: isDark ? '#374151' : '#e5e7eb',
-        textStyle: { color: isDark ? '#f3f4f6' : '#1f2937' }
+        backgroundColor: isDark ? '#1E293B' : '#ffffff',
+        borderColor: isDark ? '#334155' : '#e5e7eb',
+        textStyle: { color: isDark ? '#F8FAFC' : '#1f2937' }
       },
     };
 
@@ -88,13 +88,13 @@ export const RealtimeLineChart: React.FC<Props> = ({
   const current = data.length > 0 ? data[data.length - 1] : null;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
-      <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+    <div className="rounded-lg border border-secondary bg-surface p-4 shadow-sm">
+      <h3 className="text-sm font-semibold text-text uppercase tracking-wider mb-2">
         {title}
       </h3>
       <div ref={chartRef} className="h-48" />
-      <div className="mt-2 text-right text-xs text-gray-500 dark:text-gray-400">
-        当前: {current === null ? '--' : current.toFixed(1)}{unit}
+      <div className="mt-2 text-right text-xs text-text-muted font-mono">
+        Current: {current === null ? '--' : current.toFixed(1)}{unit}
       </div>
     </div>
   );

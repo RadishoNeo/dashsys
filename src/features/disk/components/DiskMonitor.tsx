@@ -8,7 +8,7 @@ export const DiskMonitor: React.FC = () => {
   const { disks } = useDiskStats();
 
   if (disks.length === 0) {
-    return <div className="p-4 text-gray-500 dark:text-gray-400">Loading disk stats...</div>;
+    return <div className="p-4 text-text-muted animate-pulse">Loading disk stats...</div>;
   }
 
   const totalSpace = disks.reduce((sum, d) => sum + d.total_space, 0);
@@ -37,28 +37,28 @@ export const DiskMonitor: React.FC = () => {
         {disks.map((d) => (
           <div
             key={`${d.mount_point}-${d.name}`}
-            className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+            className="rounded-lg border border-secondary bg-surface p-4 shadow-sm"
           >
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                <div className="text-sm font-semibold text-text">
                   {d.name}
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">
+                <div className="text-xs text-text-muted">
                   {d.mount_point} · {d.file_system}
                 </div>
               </div>
-              <div className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+              <div className="text-sm font-semibold text-text">
                 {formatPercentage(d.usage_percent)}
               </div>
             </div>
-            <div className="mt-3 h-2 w-full overflow-hidden rounded bg-gray-100 dark:bg-gray-700">
+            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-secondary">
               <div
-                className="h-full bg-blue-500"
+                className="h-full bg-cta transition-all duration-300"
                 style={{ width: `${Math.min(100, Math.max(0, d.usage_percent))}%` }}
               />
             </div>
-            <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+            <div className="mt-2 text-xs text-text-muted">
               {formatBytes(d.used_space)} / {formatBytes(d.total_space)} used
             </div>
           </div>

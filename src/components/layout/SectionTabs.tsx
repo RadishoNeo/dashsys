@@ -25,8 +25,8 @@ export const SectionTabs: React.FC<Props> = ({ value, onChange, tabs }) => {
             onClick={() => onChange(t.key)}
             className={
               active
-                ? "rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white"
-                : "rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 dark:ring-gray-700 dark:hover:bg-gray-700"
+                ? "rounded-md bg-cta px-3 py-2 text-sm font-medium text-white shadow-md shadow-cta/20 transition-all duration-200"
+                : "rounded-md bg-surface px-3 py-2 text-sm font-medium text-text-muted ring-1 ring-secondary hover:bg-secondary/50 hover:text-text transition-colors duration-200"
             }
           >
             {t.label}

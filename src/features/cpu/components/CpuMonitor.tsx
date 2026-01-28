@@ -10,7 +10,7 @@ import { CpuDetail } from "./CpuDetail";
 export const CpuMonitor: React.FC = () => {
     const { current, history, coreCount, loadAvg } = useCpuStats(1000);
 
-    if (!current) return <div className="p-4 text-gray-500 dark:text-gray-400">Loading CPU stats...</div>;
+    if (!current) return <div className="p-4 text-text-muted animate-pulse">Loading CPU stats...</div>;
 
     return (
         <div className="space-y-4">

@@ -25,69 +25,69 @@ export const ProcessMonitor: React.FC = () => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by pid/name/command"
-            className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-800 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+            className="w-full rounded-md border border-secondary bg-surface px-3 py-2 text-sm text-text placeholder-text-muted shadow-sm focus:border-cta focus:ring-1 focus:ring-cta outline-none"
           />
         </div>
         <button
           type="button"
           onClick={() => void refresh()}
-          className="inline-flex items-center justify-center gap-2 rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 dark:ring-gray-700 dark:hover:bg-gray-700"
+          className="inline-flex items-center justify-center gap-2 rounded-md bg-surface px-3 py-2 text-sm font-medium text-text-muted shadow-sm ring-1 ring-secondary hover:bg-secondary/50 hover:text-text transition-colors"
         >
           <RefreshCcw className="h-4 w-4" />
           Refresh
         </button>
       </div>
 
-      <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <div className="border-b border-gray-200 px-4 py-3 text-sm font-semibold text-gray-900 dark:border-gray-700 dark:text-white">
+      <div className="rounded-lg border border-secondary bg-surface shadow-sm overflow-hidden">
+        <div className="border-b border-secondary px-4 py-3 text-sm font-semibold text-text">
           Processes ({processes.length}) {loading ? "…" : ""}
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-gray-50 text-xs uppercase text-gray-500 dark:bg-gray-900/30 dark:text-gray-400">
+            <thead className="bg-secondary/20 text-xs uppercase text-text-muted">
               <tr>
-                <th className="px-4 py-3">PID</th>
-                <th className="px-4 py-3">Name</th>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">CPU</th>
-                <th className="px-4 py-3">Memory</th>
-                <th className="px-4 py-3">Disk R/W</th>
-                <th className="px-4 py-3"></th>
+                <th className="px-4 py-3 font-medium">PID</th>
+                <th className="px-4 py-3 font-medium">Name</th>
+                <th className="px-4 py-3 font-medium">Status</th>
+                <th className="px-4 py-3 font-medium">CPU</th>
+                <th className="px-4 py-3 font-medium">Memory</th>
+                <th className="px-4 py-3 font-medium">Disk R/W</th>
+                <th className="px-4 py-3 font-medium"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="divide-y divide-secondary">
               {processes.map((p) => (
-                <tr key={p.pid} className="hover:bg-gray-50 dark:hover:bg-gray-900/30">
-                  <td className="px-4 py-3 font-mono text-xs text-gray-700 dark:text-gray-200">
+                <tr key={p.pid} className="hover:bg-secondary/10 transition-colors">
+                  <td className="px-4 py-3 font-mono text-xs text-text">
                     {p.pid}
                   </td>
                   <td className="px-4 py-3">
-                    <div className="font-medium text-gray-900 dark:text-white">
+                    <div className="font-medium text-text">
                       {p.name}
                     </div>
                     {p.command ? (
-                      <div className="mt-1 truncate text-xs text-gray-500 dark:text-gray-400">
+                      <div className="mt-1 truncate text-xs text-text-muted">
                         {p.command}
                       </div>
                     ) : null}
                   </td>
-                  <td className="px-4 py-3 text-gray-700 dark:text-gray-200">
+                  <td className="px-4 py-3 text-text">
                     {p.status}
                   </td>
-                  <td className="px-4 py-3 text-gray-700 dark:text-gray-200">
+                  <td className="px-4 py-3 text-text font-mono">
                     {formatPercentage(p.cpu_usage)}
                   </td>
-                  <td className="px-4 py-3 text-gray-700 dark:text-gray-200">
+                  <td className="px-4 py-3 text-text font-mono">
                     {formatBytes(p.memory)}
                   </td>
-                  <td className="px-4 py-3 text-gray-700 dark:text-gray-200">
+                  <td className="px-4 py-3 text-text font-mono">
                     {formatBytes(p.disk_read)} / {formatBytes(p.disk_written)}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button
                       type="button"
                       onClick={() => void onKill(p.pid)}
-                      className="inline-flex items-center gap-2 rounded-md bg-red-600 px-3 py-2 text-xs font-medium text-white hover:bg-red-700"
+                      className="inline-flex items-center gap-2 rounded-md bg-red-500/10 px-3 py-2 text-xs font-medium text-red-500 hover:bg-red-500/20 border border-red-500/20 transition-colors"
                     >
                       <ShieldX className="h-4 w-4" />
                       Kill

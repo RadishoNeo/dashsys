@@ -11,7 +11,7 @@ export const CpuChart: React.FC<Props> = ({ history }) => {
       title="CPU Usage History"
       data={history}
       maxPoints={history.length}
-      color="#3b82f6"
+      color="#22C55E"
       unit="%"
     />
   );

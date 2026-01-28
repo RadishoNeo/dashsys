@@ -1,1 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Fira Code", ui-monospace, SFMono-Regular, monospace;
+
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-cta: var(--cta);
+  --color-cta-hover: var(--cta-hover);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  
+  --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-slide-up: slide-up 0.4s ease-out;
+}
+
+@layer base {
+  :root {
+    /* Light Mode (Clean Tech) */
+    --primary: #0F172A;
+    --secondary: #E2E8F0;
+    --cta: #22C55E;
+    --cta-hover: #16A34A;
+    --background: #F1F5F9;
+    --surface: #FFFFFF;
+    --text: #0F172A;
+    --text-muted: #64748B;
+  }
+
+  :root.dark {
+    /* Dark Mode (Deep Tech) */
+    --primary: #1E293B;
+    --secondary: #334155;
+    --cta: #22C55E;
+    --cta-hover: #16A34A;
+    --background: #0F172A;
+    --surface: #1E293B;
+    --text: #F8FAFC;
+    --text-muted: #94A3B8;
+  }
+
+  :root {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: var(--font-sans);
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--cta);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
