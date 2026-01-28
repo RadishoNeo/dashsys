@@ -31,8 +31,13 @@ const mapProcessStatus = (
 };
 
 export const useSystemStats = () => {
-  const { updateRealtime, updateMedium, setStatic } = useSystemStore();
-  const lastNetworkTotalsRef = useRef<{ rx: number; tx: number; ts: number } | null>(null);
+  const { updateRealtime, updateMedium, setStatic, pushHistory } =
+    useSystemStore();
+  const lastNetworkTotalsRef = useRef<{
+    rx: number;
+    tx: number;
+    ts: number;
+  } | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -53,7 +58,11 @@ export const useSystemStats = () => {
     const tickRealtime = async () => {
       await Promise.all([refreshCpu(), refreshMemory()]);
 
-      const [cpu, mem, net] = await Promise.all([cpuInfo(), memoryInfo(), networks()]);
+      const [cpu, mem, net] = await Promise.all([
+        cpuInfo(),
+        memoryInfo(),
+        networks(),
+      ]);
 
       const perCore = cpu.cpus.map((c) => c.cpu_usage);
       const usage =
@@ -72,7 +81,10 @@ export const useSystemStats = () => {
         free: Math.max(0, mem.total_memory - mem.used_memory),
         swap_total: mem.total_swap,
         swap_used: mem.used_swap,
-        usage_percent: mem.total_memory === 0 ? 0 : (mem.used_memory / mem.total_memory) * 100,
+        usage_percent:
+          mem.total_memory === 0
+            ? 0
+            : (mem.used_memory / mem.total_memory) * 100,
       };
 
       const interfaces = net.map((i) => ({
@@ -98,12 +110,23 @@ export const useSystemStats = () => {
       const speedTx = last ? calculateSpeed(totals.tx, last.tx, deltaMs) : 0;
       lastNetworkTotalsRef.current = { rx: totals.rx, tx: totals.tx, ts: now };
 
+      if (mounted) {
+        pushHistory({
+          cpu: usage,
+          memory: memory.usage_percent,
+          network: {
+            rx: (speedRx * 8) / 1_000_000,
+            tx: (speedTx * 8) / 1_000_000,
+          },
+        });
+      }
+
       const network: NetworkStats = {
         interfaces: interfaces.map((i) => ({
           ...i,
           speed:
             i.name === interfaces[0]?.name
-              ? (speedRx + speedTx) * 8 / 1_000_000
+              ? ((speedRx + speedTx) * 8) / 1_000_000
               : undefined,
         })),
         total_rx: totals.rx,
@@ -174,8 +197,14 @@ export const useSystemStats = () => {
     safe(tickRealtime);
     safe(tickMedium);
 
-    const realtimeTimer = window.setInterval(() => void safe(tickRealtime), REALTIME_INTERVAL_MS);
-    const mediumTimer = window.setInterval(() => void safe(tickMedium), MEDIUM_INTERVAL_MS);
+    const realtimeTimer = window.setInterval(
+      () => void safe(tickRealtime),
+      REALTIME_INTERVAL_MS,
+    );
+    const mediumTimer = window.setInterval(
+      () => void safe(tickMedium),
+      MEDIUM_INTERVAL_MS,
+    );
 
     return () => {
       mounted = false;
@@ -184,4 +213,3 @@ export const useSystemStats = () => {
     };
   }, [setStatic, updateMedium, updateRealtime]);
 };
-

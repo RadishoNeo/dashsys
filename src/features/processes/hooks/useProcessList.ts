@@ -12,7 +12,7 @@ const mapStatus = (status: string): ProcessInfo["status"] => {
   return "Running";
 };
 
-export const useProcessList = (interval: number = MEDIUM_INTERVAL_MS) => {
+export const useProcessList = () => {
   const { medium, updateMedium } = useSystemStore();
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,11 +40,7 @@ export const useProcessList = (interval: number = MEDIUM_INTERVAL_MS) => {
     }
   }, [updateMedium]);
 
-  useEffect(() => {
-    void fetchList();
-    const timer = window.setInterval(() => void fetchList(), interval);
-    return () => window.clearInterval(timer);
-  }, [fetchList, interval]);
+  // Remove automatic interval as it is handled by useSystemStats
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

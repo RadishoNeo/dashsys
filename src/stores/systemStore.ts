@@ -22,11 +22,25 @@ interface SystemState {
     cpuInfo: CpuInfo | null;
   };
   
+  // 历史数据（用于图表）
+  history: {
+    cpu: number[];
+    memory: number[];
+    network: { rx: number[]; tx: number[] };
+  };
+  
   // Actions
   updateRealtime: (data: Partial<SystemState['realtime']>) => void;
   updateMedium: (data: Partial<SystemState['medium']>) => void;
   setStatic: (data: Partial<SystemState['static']>) => void;
+  pushHistory: (data: Partial<{
+    cpu: number;
+    memory: number;
+    network: { rx: number; tx: number };
+  }>) => void;
 }
+
+const MAX_HISTORY_LENGTH = 60;
 
 export const useSystemStore = create<SystemState>((set) => ({
   realtime: {
@@ -43,6 +57,14 @@ export const useSystemStore = create<SystemState>((set) => ({
     systemInfo: null,
     cpuInfo: null,
   },
+  history: {
+    cpu: new Array(MAX_HISTORY_LENGTH).fill(0),
+    memory: new Array(MAX_HISTORY_LENGTH).fill(0),
+    network: {
+      rx: new Array(MAX_HISTORY_LENGTH).fill(0),
+      tx: new Array(MAX_HISTORY_LENGTH).fill(0),
+    },
+  },
   
   updateRealtime: (data) => set((state) => ({
     realtime: { ...state.realtime, ...data }
@@ -53,4 +75,22 @@ export const useSystemStore = create<SystemState>((set) => ({
   setStatic: (data) => set((state) => ({
     static: { ...state.static, ...data }
   })),
+  pushHistory: (data) => set((state) => {
+    const newHistory = { ...state.history };
+    
+    if (data.cpu !== undefined) {
+      newHistory.cpu = [...state.history.cpu.slice(1), data.cpu];
+    }
+    if (data.memory !== undefined) {
+      newHistory.memory = [...state.history.memory.slice(1), data.memory];
+    }
+    if (data.network) {
+      newHistory.network = {
+        rx: [...state.history.network.rx.slice(1), data.network.rx],
+        tx: [...state.history.network.tx.slice(1), data.network.tx],
+      };
+    }
+    
+    return { history: newHistory };
+  }),
 }));
