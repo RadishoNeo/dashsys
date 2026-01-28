@@ -3,12 +3,14 @@ import { HardDrive } from "lucide-react";
 import { useDiskStats } from "../hooks/useDiskStats";
 import { MetricCard } from "@/components/metrics/MetricCard";
 import { formatBytes, formatPercentage } from "@/lib/format";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 
 export const DiskMonitor: React.FC = () => {
   const { disks } = useDiskStats();
 
   if (disks.length === 0) {
-    return <div className="p-4 text-text-muted animate-pulse">Loading disk stats...</div>;
+    return <div className="p-4 text-muted-foreground animate-pulse">Loading disk stats...</div>;
   }
 
   const totalSpace = disks.reduce((sum, d) => sum + d.total_space, 0);
@@ -35,33 +37,27 @@ export const DiskMonitor: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {disks.map((d) => (
-          <div
-            key={`${d.mount_point}-${d.name}`}
-            className="rounded-lg border border-secondary bg-surface p-4 shadow-sm"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-sm font-semibold text-text">
-                  {d.name}
+          <Card key={`${d.mount_point}-${d.name}`} className="shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-sm font-semibold">
+                    {d.name}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {d.mount_point} · {d.file_system}
+                  </div>
                 </div>
-                <div className="text-xs text-text-muted">
-                  {d.mount_point} · {d.file_system}
+                <div className="text-sm font-semibold">
+                  {formatPercentage(d.usage_percent)}
                 </div>
               </div>
-              <div className="text-sm font-semibold text-text">
-                {formatPercentage(d.usage_percent)}
+              <Progress value={d.usage_percent} className="mt-3 h-2" />
+              <div className="mt-2 text-xs text-muted-foreground">
+                {formatBytes(d.used_space)} / {formatBytes(d.total_space)} used
               </div>
-            </div>
-            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-secondary">
-              <div
-                className="h-full bg-cta transition-all duration-300"
-                style={{ width: `${Math.min(100, Math.max(0, d.usage_percent))}%` }}
-              />
-            </div>
-            <div className="mt-2 text-xs text-text-muted">
-              {formatBytes(d.used_space)} / {formatBytes(d.total_space)} used
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>

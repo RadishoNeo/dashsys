@@ -1,5 +1,12 @@
 import React, { useEffect } from "react";
 import { useSettingsStore, type ThemeMode } from "@/stores/settingsStore";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Props {
   title: string;
@@ -29,15 +36,16 @@ export const AppLayout: React.FC<Props> = ({ title, children }) => {
             {title}
           </h1>
           <div className="flex items-center gap-2">
-            <select
-              value={theme}
-              onChange={(e) => setTheme(e.target.value as ThemeMode)}
-              className="rounded-md border border-secondary bg-surface px-3 py-2 text-sm text-text shadow-sm focus:border-cta focus:ring-1 focus:ring-cta outline-none"
-            >
-              <option value="system">System</option>
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-            </select>
+            <Select value={theme} onValueChange={(v) => setTheme(v as ThemeMode)}>
+              <SelectTrigger className="w-45">
+                <SelectValue placeholder="Theme" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="system">System</SelectItem>
+                <SelectItem value="light">Light</SelectItem>
+                <SelectItem value="dark">Dark</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </header>
         <main>{children}</main>

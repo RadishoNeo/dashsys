@@ -1,4 +1,5 @@
 import React from "react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export type SectionKey = "cpu" | "memory" | "disk" | "network" | "processes";
 
@@ -15,25 +16,15 @@ interface Props {
 
 export const SectionTabs: React.FC<Props> = ({ value, onChange, tabs }) => {
   return (
-    <div className="flex flex-wrap gap-2">
-      {tabs.map((t) => {
-        const active = t.key === value;
-        return (
-          <button
-            key={t.key}
-            type="button"
-            onClick={() => onChange(t.key)}
-            className={
-              active
-                ? "rounded-md bg-cta px-3 py-2 text-sm font-medium text-white shadow-md shadow-cta/20 transition-all duration-200"
-                : "rounded-md bg-surface px-3 py-2 text-sm font-medium text-text-muted ring-1 ring-secondary hover:bg-secondary/50 hover:text-text transition-colors duration-200"
-            }
-          >
+    <Tabs value={value} onValueChange={(v) => onChange(v as SectionKey)} className="w-full">
+      <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 h-auto">
+        {tabs.map((t) => (
+          <TabsTrigger key={t.key} value={t.key}>
             {t.label}
-          </button>
-        );
-      })}
-    </div>
+          </TabsTrigger>
+        ))}
+      </TabsList>
+    </Tabs>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import * as echarts from 'echarts';
 import { useTheme } from '@/hooks/useTheme';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Props {
   data: number[];
@@ -88,14 +89,16 @@ export const RealtimeLineChart: React.FC<Props> = ({
   const current = data.length > 0 ? data[data.length - 1] : null;
 
   return (
-    <div className="rounded-lg border border-secondary bg-surface p-4 shadow-sm">
-      <h3 className="text-sm font-semibold text-text uppercase tracking-wider mb-2">
-        {title}
-      </h3>
-      <div ref={chartRef} className="h-48" />
-      <div className="mt-2 text-right text-xs text-text-muted font-mono">
-        Current: {current === null ? '--' : current.toFixed(1)}{unit}
-      </div>
-    </div>
+    <Card className="shadow-sm">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm font-semibold uppercase tracking-wider">{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div ref={chartRef} className="h-48" />
+        <div className="mt-2 text-right text-xs text-muted-foreground font-mono">
+          Current: {current === null ? '--' : current.toFixed(1)}{unit}
+        </div>
+      </CardContent>
+    </Card>
   );
 };

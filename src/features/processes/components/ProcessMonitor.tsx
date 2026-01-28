@@ -3,6 +3,17 @@ import { ShieldX, RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
 import { useProcessList } from "../hooks/useProcessList";
 import { formatBytes, formatPercentage } from "@/lib/format";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const ProcessMonitor: React.FC = () => {
   const { processes, query, setQuery, loading, refresh, killProcess } = useProcessList();
@@ -21,94 +32,94 @@ export const ProcessMonitor: React.FC = () => {
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 items-center gap-2">
-          <input
+          <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by pid/name/command"
-            className="w-full rounded-md border border-secondary bg-surface px-3 py-2 text-sm text-text placeholder-text-muted shadow-sm focus:border-cta focus:ring-1 focus:ring-cta outline-none"
+            className="w-full"
           />
         </div>
-        <button
-          type="button"
+        <Button
+          variant="outline"
           onClick={() => void refresh()}
-          className="inline-flex items-center justify-center gap-2 rounded-md bg-surface px-3 py-2 text-sm font-medium text-text-muted shadow-sm ring-1 ring-secondary hover:bg-secondary/50 hover:text-text transition-colors"
+          className="gap-2"
         >
           <RefreshCcw className="h-4 w-4" />
           Refresh
-        </button>
+        </Button>
       </div>
 
-      <div className="rounded-lg border border-secondary bg-surface shadow-sm overflow-hidden">
-        <div className="border-b border-secondary px-4 py-3 text-sm font-semibold text-text">
-          Processes ({processes.length}) {loading ? "…" : ""}
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-secondary/20 text-xs uppercase text-text-muted">
-              <tr>
-                <th className="px-4 py-3 font-medium">PID</th>
-                <th className="px-4 py-3 font-medium">Name</th>
-                <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 font-medium">CPU</th>
-                <th className="px-4 py-3 font-medium">Memory</th>
-                <th className="px-4 py-3 font-medium">Disk R/W</th>
-                <th className="px-4 py-3 font-medium"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-secondary">
-              {processes.map((p) => (
-                <tr key={p.pid} className="hover:bg-secondary/10 transition-colors">
-                  <td className="px-4 py-3 font-mono text-xs text-text">
-                    {p.pid}
-                  </td>
-                  <td className="px-4 py-3 max-w-75">
-                    <div className="font-medium text-text truncate" title={p.name}>
-                      {p.name}
-                    </div>
-                    {p.command ? (
-                      <div className="mt-1 truncate text-xs text-text-muted" title={p.command}>
-                        {p.command}
+      <Card className="overflow-hidden">
+        <CardHeader className="border-b px-4 py-3">
+          <CardTitle className="text-sm font-semibold">Processes ({processes.length}) {loading ? "…" : ""}</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/50 hover:bg-muted/50">
+                  <TableHead className="w-[80px]">PID</TableHead>
+                  <TableHead className="max-w-[300px]">Name</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>CPU</TableHead>
+                  <TableHead>Memory</TableHead>
+                  <TableHead>Disk R/W</TableHead>
+                  <TableHead className="text-right"></TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {processes.map((p) => (
+                  <TableRow key={p.pid}>
+                    <TableCell className="font-mono text-xs text-muted-foreground">
+                      {p.pid}
+                    </TableCell>
+                    <TableCell className="max-w-[300px]">
+                      <div className="font-medium truncate" title={p.name}>
+                        {p.name}
                       </div>
-                    ) : null}
-                  </td>
-                  <td className="px-4 py-3 text-text">
-                    {p.status}
-                  </td>
-                  <td className="px-4 py-3 text-text font-mono">
-                    {formatPercentage(p.cpu_usage)}
-                  </td>
-                  <td className="px-4 py-3 text-text font-mono">
-                    {formatBytes(p.memory)}
-                  </td>
-                  <td className="px-4 py-3 text-text font-mono">
-                    {formatBytes(p.disk_read)} / {formatBytes(p.disk_written)}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <button
-                      type="button"
-                      onClick={() => void onKill(p.pid)}
-                      className="inline-flex items-center gap-2 rounded-md bg-red-500/10 px-3 py-2 text-xs font-medium text-red-500 hover:bg-red-500/20 border border-red-500/20 transition-colors"
-                    >
-                      <ShieldX className="h-4 w-4" />
-                      Kill
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {processes.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={7}
-                    className="px-4 py-8 text-center text-gray-500 dark:text-gray-400"
-                  >
-                    No processes
-                  </td>
-                </tr>
-              ) : null}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                      {p.command ? (
+                        <div className="mt-1 truncate text-xs text-muted-foreground" title={p.command}>
+                          {p.command}
+                        </div>
+                      ) : null}
+                    </TableCell>
+                    <TableCell>
+                      {p.status}
+                    </TableCell>
+                    <TableCell className="font-mono">
+                      {formatPercentage(p.cpu_usage)}
+                    </TableCell>
+                    <TableCell className="font-mono">
+                      {formatBytes(p.memory)}
+                    </TableCell>
+                    <TableCell className="font-mono">
+                      {formatBytes(p.disk_read)} / {formatBytes(p.disk_written)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => void onKill(p.pid)}
+                        className="text-red-500 hover:text-red-600 hover:bg-red-500/10 h-8 px-2"
+                      >
+                        <ShieldX className="h-4 w-4 mr-2" />
+                        Kill
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {processes.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={7} className="h-24 text-center">
+                      No processes found.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

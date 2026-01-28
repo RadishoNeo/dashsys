@@ -4,12 +4,13 @@ import { useNetworkStats } from "../hooks/useNetworkStats";
 import { MetricCard } from "@/components/metrics/MetricCard";
 import { RealtimeLineChart } from "@/components/charts/RealtimeLineChart";
 import { formatBytes } from "@/lib/format";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 export const NetworkMonitor: React.FC = () => {
   const { current, rxSpeedHistory, txSpeedHistory } = useNetworkStats();
 
   if (!current) {
-    return <div className="p-4 text-text-muted animate-pulse">Loading network stats...</div>;
+    return <div className="p-4 text-muted-foreground animate-pulse">Loading network stats...</div>;
   }
 
   const rxMbps = rxSpeedHistory[rxSpeedHistory.length - 1] ?? 0;
@@ -54,28 +55,30 @@ export const NetworkMonitor: React.FC = () => {
         />
       </div>
 
-      <div className="rounded-lg border border-secondary bg-surface shadow-sm">
-        <div className="border-b border-secondary px-4 py-3 text-sm font-semibold text-text">
-          Interfaces
-        </div>
-        <div className="divide-y divide-secondary">
-          {current.interfaces.map((i) => (
-            <div key={i.name} className="px-4 py-3 text-sm">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <div className="font-medium text-text">
-                  {i.name}
+      <Card>
+        <CardHeader className="border-b px-4 py-3">
+          <CardTitle className="text-sm font-semibold">Interfaces</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="divide-y divide-border">
+            {current.interfaces.map((i) => (
+              <div key={i.name} className="px-4 py-3 text-sm">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="font-medium">
+                    {i.name}
+                  </div>
+                  <div className="text-muted-foreground">
+                    RX: {formatBytes(i.rx_bytes)} · TX: {formatBytes(i.tx_bytes)}
+                  </div>
                 </div>
-                <div className="text-text-muted">
-                  RX: {formatBytes(i.rx_bytes)} · TX: {formatBytes(i.tx_bytes)}
+                <div className="mt-1 text-xs text-muted-foreground">
+                  Errors RX: {i.rx_errors} · Errors TX: {i.tx_errors}
                 </div>
               </div>
-              <div className="mt-1 text-xs text-text-muted">
-                Errors RX: {i.rx_errors} · Errors TX: {i.tx_errors}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

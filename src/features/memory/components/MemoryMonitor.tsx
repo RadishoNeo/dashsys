@@ -9,7 +9,7 @@ export const MemoryMonitor: React.FC = () => {
   const { current, history } = useMemoryStats();
 
   if (!current) {
-    return <div className="p-4 text-text-muted animate-pulse">Loading memory stats...</div>;
+    return <div className="p-4 text-muted-foreground animate-pulse">Loading memory stats...</div>;
   }
 
   const status =
