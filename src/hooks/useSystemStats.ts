@@ -19,7 +19,14 @@ import type {
   SystemInfo,
 } from "@/types/system";
 import { calculateSpeed } from "@/lib/format";
-import { MEDIUM_INTERVAL_MS, REALTIME_INTERVAL_MS } from "@/lib/constants";
+import {
+  MEDIUM_INTERVAL_MS,
+  REALTIME_INTERVAL_MS,
+  HISTORY_SAVE_INTERVAL_MS,
+  CLEANUP_INTERVAL_MS,
+  AGGREGATE_INTERVAL_MS,
+} from "@/lib/constants";
+import { saveHistoryData, cleanupOldData, aggregateHourly } from "@/hooks/useHistoryData";
 
 const mapProcessStatus = (
   status: string,
@@ -38,6 +45,9 @@ export const useSystemStats = () => {
     tx: number;
     ts: number;
   } | null>(null);
+  const lastSaveTimeRef = useRef<number>(0);
+  const lastCleanupTimeRef = useRef<number>(0);
+  const lastAggregateTimeRef = useRef<number>(0);
 
   useEffect(() => {
     let mounted = true;
@@ -146,6 +156,50 @@ export const useSystemStats = () => {
         network,
         timestamp: Math.floor(now / 1000),
       });
+
+      const lastSave = lastSaveTimeRef.current;
+      if (now - lastSave >= HISTORY_SAVE_INTERVAL_MS) {
+        lastSaveTimeRef.current = now;
+        try {
+          await saveHistoryData({
+            cpu: {
+              usage,
+              frequency,
+              per_core: perCore,
+            },
+            memory: {
+              usage_percent: memory.usage_percent,
+              used_bytes: memory.used,
+              available_bytes: memory.available,
+              swap_used_bytes: memory.swap_used,
+              swap_total_bytes: memory.swap_total,
+            },
+            network: {
+              interface_name: interfaces[0]?.name ?? "unknown",
+              rx_bytes: totals.rx,
+              tx_bytes: totals.tx,
+              rx_speed: speedRx,
+              tx_speed: speedTx,
+            },
+          });
+        } catch {}
+      }
+
+      const lastCleanup = lastCleanupTimeRef.current;
+      if (now - lastCleanup >= CLEANUP_INTERVAL_MS) {
+        lastCleanupTimeRef.current = now;
+        try {
+          await cleanupOldData();
+        } catch {}
+      }
+
+      const lastAggregate = lastAggregateTimeRef.current;
+      if (now - lastAggregate >= AGGREGATE_INTERVAL_MS) {
+        lastAggregateTimeRef.current = now;
+        try {
+          await aggregateHourly();
+        } catch {}
+      }
     };
 
     const tickMedium = async () => {

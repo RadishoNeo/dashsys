@@ -6,6 +6,7 @@ import { DiskMonitor } from "@/features/disk";
 import { NetworkMonitor } from "@/features/network";
 import { ProcessMonitor } from "@/features/processes";
 import { SystemDetail } from "@/features/system";
+import { HistoryPanel } from "@/features/history";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { SectionTabs, type SectionKey } from "@/components/layout/SectionTabs";
 import { useSystemStats } from "@/hooks/useSystemStats";
@@ -21,6 +22,7 @@ function App() {
       { key: "disk" as const, label: "Disk" },
       { key: "network" as const, label: "Network" },
       { key: "processes" as const, label: "Processes" },
+      { key: "history" as const, label: "History" },
       { key: "system" as const, label: "System Info" },
     ],
     [],
@@ -35,6 +37,7 @@ function App() {
         {section === "disk" ? <DiskMonitor /> : null}
         {section === "network" ? <NetworkMonitor /> : null}
         {section === "processes" ? <ProcessMonitor /> : null}
+        {section === "history" ? <HistoryPanel /> : null}
         {section === "system" ? <SystemDetail /> : null}
       </div>
       <Toaster />

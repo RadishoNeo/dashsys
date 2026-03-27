@@ -1,7 +1,7 @@
 import React from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export type SectionKey = "cpu" | "memory" | "disk" | "network" | "processes" | "system";
+export type SectionKey = "cpu" | "memory" | "disk" | "network" | "processes" | "history" | "system";
 
 interface Tab {
   key: SectionKey;
@@ -17,7 +17,7 @@ interface Props {
 export const SectionTabs: React.FC<Props> = ({ value, onChange, tabs }) => {
   return (
     <Tabs value={value} onValueChange={(v) => onChange(v as SectionKey)} className="w-full">
-      <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 h-auto">
+      <TabsList className="grid w-full grid-cols-2 md:grid-cols-7 h-auto">
         {tabs.map((t) => (
           <TabsTrigger key={t.key} value={t.key}>
             {t.label}

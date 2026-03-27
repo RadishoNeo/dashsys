@@ -1,4 +1,7 @@
 export const REALTIME_INTERVAL_MS = 1000;
 export const MEDIUM_INTERVAL_MS = 3000;
 export const HISTORY_LENGTH = 60;
+export const HISTORY_SAVE_INTERVAL_MS = 5000;
+export const CLEANUP_INTERVAL_MS = 3600000;
+export const AGGREGATE_INTERVAL_MS = 3600000;
 
